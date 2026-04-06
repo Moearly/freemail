@@ -1,4 +1,134 @@
-// 发送邮件服务（Resend）——基于 fetch 的 Edge 兼容实现
+// 发送邮件服务（Resend + Microsoft Graph API）——基于 fetch 的 Edge 兼容实现
+
+// ===================== Microsoft Graph API =====================
+
+/**
+ * 解析 MS_ACCOUNTS 配置，支持多个微软邮箱账号
+ * 格式: JSON 数组，每项包含 email, tenantId, clientId, clientSecret
+ * 示例: [{"email":"a@outlook.com","tenantId":"...","clientId":"...","clientSecret":"..."}]
+ * 或简化格式: email1:tenantId:clientId:clientSecret,email2:tenantId:clientId:clientSecret
+ */
+export function parseMsAccountsConfig(configStr) {
+  if (!configStr) return [];
+  try {
+    const parsed = JSON.parse(configStr);
+    if (Array.isArray(parsed)) return parsed;
+    if (typeof parsed === 'object' && parsed.email) return [parsed];
+  } catch (_) {}
+  return String(configStr).split(';').map(entry => {
+    const parts = entry.trim().split(':');
+    if (parts.length >= 4) {
+      return { email: parts[0].trim(), tenantId: parts[1].trim(), clientId: parts[2].trim(), clientSecret: parts.slice(3).join(':').trim() };
+    }
+    return null;
+  }).filter(Boolean);
+}
+
+/**
+ * 根据发件地址选择微软账号
+ */
+export function selectMsAccount(fromEmail, accounts) {
+  if (!Array.isArray(accounts) || !accounts.length || !fromEmail) return null;
+  const addr = String(fromEmail).toLowerCase().replace(/.*</, '').replace(/>.*/, '').trim();
+  return accounts.find(a => a.email?.toLowerCase() === addr) || null;
+}
+
+const msTokenCache = new Map();
+
+async function getMsAccessToken(account) {
+  const cacheKey = `${account.tenantId}:${account.clientId}`;
+  const cached = msTokenCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now() + 60000) return cached.token;
+
+  const resp = await fetch(`https://login.microsoftonline.com/${account.tenantId}/oauth2/v2.0/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: account.clientId,
+      client_secret: account.clientSecret,
+      scope: 'https://graph.microsoft.com/.default',
+      grant_type: 'client_credentials'
+    })
+  });
+  const data = await resp.json().catch(() => ({}));
+  if (!resp.ok) throw new Error(data.error_description || data.error || 'MS token failed');
+  msTokenCache.set(cacheKey, { token: data.access_token, expiresAt: Date.now() + (data.expires_in || 3600) * 1000 });
+  return data.access_token;
+}
+
+/**
+ * 通过 Microsoft Graph API 发送邮件
+ */
+export async function sendEmailWithMs(account, payload) {
+  const token = await getMsAccessToken(account);
+  const toRecipients = (Array.isArray(payload.to) ? payload.to : [payload.to]).filter(Boolean).map(addr => ({
+    emailAddress: { address: String(addr).replace(/.*</, '').replace(/>.*/, '').trim() }
+  }));
+  const body = {
+    message: {
+      subject: payload.subject || '',
+      body: {
+        contentType: payload.html ? 'HTML' : 'Text',
+        content: payload.html || payload.text || ''
+      },
+      toRecipients
+    },
+    saveToSentItems: true
+  };
+  if (payload.cc) {
+    body.message.ccRecipients = (Array.isArray(payload.cc) ? payload.cc : [payload.cc]).map(a => ({ emailAddress: { address: a } }));
+  }
+  if (payload.bcc) {
+    body.message.bccRecipients = (Array.isArray(payload.bcc) ? payload.bcc : [payload.bcc]).map(a => ({ emailAddress: { address: a } }));
+  }
+  if (payload.fromName) {
+    body.message.from = { emailAddress: { name: payload.fromName, address: account.email } };
+  }
+
+  const resp = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(account.email)}/sendMail`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!resp.ok) {
+    const errData = await resp.json().catch(() => ({}));
+    throw new Error(errData?.error?.message || `MS Graph send failed (${resp.status})`);
+  }
+  return { id: `ms-${Date.now()}`, provider: 'microsoft', from: account.email };
+}
+
+/**
+ * 统一发件入口：优先匹配 Resend 域名，其次匹配微软账号，最终 fallback
+ */
+export async function sendEmailUnified(env, payload) {
+  const resendConfig = env.RESEND_API_KEY || env.RESEND_TOKEN || env.RESEND || '';
+  const msConfig = env.MS_ACCOUNTS || '';
+  const fromAddr = String(payload.from || '').toLowerCase().replace(/.*</, '').replace(/>.*/, '').trim();
+
+  // 1. 尝试 Resend
+  if (resendConfig) {
+    const apiKey = selectApiKeyForDomain(payload.from, resendConfig);
+    if (apiKey) {
+      return { ...(await sendEmailWithResend(apiKey, payload)), provider: 'resend' };
+    }
+  }
+
+  // 2. 尝试 Microsoft Graph
+  if (msConfig) {
+    const accounts = parseMsAccountsConfig(msConfig);
+    const account = selectMsAccount(fromAddr, accounts);
+    if (account) {
+      return await sendEmailWithMs(account, payload);
+    }
+  }
+
+  // 3. Fallback: Resend single key
+  if (resendConfig && typeof resendConfig === 'string' && !resendConfig.includes('=') && !resendConfig.startsWith('[') && !resendConfig.startsWith('{')) {
+    return { ...(await sendEmailWithResend(resendConfig, payload)), provider: 'resend' };
+  }
+
+  throw new Error(`No email provider configured for: ${fromAddr}`);
+}
 
 /**
  * 解析 RESEND_TOKEN 配置，支持多域名API密钥映射

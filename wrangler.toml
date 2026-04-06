@@ -1,33 +1,45 @@
 name = "mailfree"
-# name = "mail-exhibit"
 main = "src/server.js"
-compatibility_date = "2024-01-01"
+compatibility_date = "2025-04-01"
+workers_dev = true
 
 # D1 数据库绑定
 [[d1_databases]]
 binding = "TEMP_MAIL_DB"
-database_name = "maill_free_db" #你的d1数据库名称
-database_id = "c82663ac-62b6-4ba6-be81-cbe297f2a3dd" # 你的database_id
+database_name = "maill_free_db"
+database_id = "9ed54bdc-edf1-4de0-9eed-c1b26825c946"
 
-# 环境变量
+# 环境变量（公开变量放这里，密钥用 wrangler secret put）
 [vars]
+MAIL_DOMAIN    = "codewith.site"          # 多域名用逗号分隔: "a.com,b.com"
+ADMIN_NAME     = "admin"                  # 管理员用户名
+LANDING_PUBLIC = "true"                   # Landing Page 匿名访问开关
+MAIL_EXPIRE_HOURS = "24"                 # 邮件自动过期时间（小时）
 
+# 以下密钥需通过 wrangler secret put 设置:
+# ADMIN_PASSWORD  - 管理员密码
+# JWT_TOKEN       - JWT 签名密钥（随机字符串）
+# GUEST_PASSWORD  - 访客密码（可选）
+# RESEND_API_KEY  - Resend 发件密钥，支持多域名格式: domain1=key1,domain2=key2
+# MS_ACCOUNTS     - 微软邮箱配置，JSON数组格式:
+#   [{"email":"user@outlook.com","tenantId":"xxx","clientId":"xxx","clientSecret":"xxx"}]
+#   支持多账号，系统根据发件地址自动匹配
 
 # 静态资源目录（Workers + Assets）
 [assets]
 directory = "public"
-# 显式指定绑定名，确保在 Worker 中通过 env.ASSETS 可用
 binding = "ASSETS"
+run_worker_first = true
 
-
-# R2 存储桶绑定（用于保存完整 EML 内容）
+# R2 存储桶绑定（保存完整 EML）
 [[r2_buckets]]
 binding = "MAIL_EML"
 bucket_name = "mail-eml"
 
-# wrangler.toml (wrangler v3.88.0^) 日志服务
-# [observability.logs]
-# enabled = true
+# 定时任务：每小时自动清理过期邮件
+[triggers]
+crons = ["0 * * * *"]
 
-
-
+# 日志
+[observability]
+enabled = true

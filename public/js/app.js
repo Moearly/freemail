@@ -608,8 +608,8 @@ if (els.createCustomOverlay){
               <span class="time">${formatTs(createdAt)}</span>
             </div>
             <div class="mailbox-actions">
-              <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶">📍</button>
-              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除">🗑️</button>
+              <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></button>
+              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
             </div>
           </div>`;
         if (els.mbList){
@@ -733,7 +733,7 @@ async function loadDomains(){
       window.__MOCK_STATE__ = { domains: ['example.com'], mailboxes: [], emailsByMailbox: new Map() };
       const bar = document.createElement('div');
       bar.className = 'demo-banner';
-      bar.innerHTML = '👀 当前为 <strong>观看模式</strong>（模拟数据，仅演示）。要接收真实邮件，请自建部署或联系部署。';
+      bar.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 当前为 <strong>观看模式</strong>（模拟数据，仅演示）。要接收真实邮件，请自建部署或联系部署。';
       document.body.prepend(bar);
       // 强制 UI 仅显示 example.com
       const exampleOnly = ['example.com'];
@@ -819,8 +819,8 @@ els.gen.onclick = async () => {
             <span class="time">${formatTs(createdAt)}</span>
           </div>
           <div class="mailbox-actions">
-            <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶">📍</button>
-            <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除">🗑️</button>
+            <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></button>
+            <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
           </div>
         </div>`;
       if (els.mbList){
@@ -904,8 +904,8 @@ if (els.genName) {
               <span class="time">${formatTs(createdAt)}</span>
             </div>
             <div class="mailbox-actions">
-              <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶">📍</button>
-              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除">🗑️</button>
+              <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${data.email}')" title="置顶"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></button>
+              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${data.email}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
             </div>
           </div>`;
         if (els.mbList) {
@@ -934,7 +934,7 @@ els.copy.onclick = async () => {
   } catch {
     showToast('复制失败，请重试', 'error');
   }
-  const t = els.copy.textContent; els.copy.textContent='✅ 已复制'; setTimeout(()=>els.copy.textContent=t,1500);
+  const t = els.copy.innerHTML; els.copy.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已复制'; setTimeout(()=>els.copy.innerHTML=t,1500);
 }
 
 els.clear.onclick = async () => {
@@ -1055,7 +1055,7 @@ async function refresh(){
       emails = await r.json();
     }finally{ clearTimeout(timeout); }
     if (!Array.isArray(emails) || emails.length===0) { 
-      els.list.innerHTML = '<div style="text-align:center;color:#64748b">📭 暂无邮件</div>'; 
+      els.list.innerHTML = '<div style="text-align:center;color:#64748b"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> 暂无邮件</div>'; 
       if (els.pager) els.pager.style.display = 'none';
       return; 
     }
@@ -1109,7 +1109,7 @@ async function refresh(){
          <div class="email-meta">
            <span class="meta-from"><span class="meta-label">${metaLabel}</span><span class="meta-from-text">${metaText}</span></span>
            <span class="email-time">
-             <span class="time-icon">🕐</span>
+             <span class="time-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
              ${window.matchMedia && window.matchMedia('(max-width: 900px)').matches ? formatTsMobile(e.received_at || e.created_at) : formatTs(e.received_at || e.created_at)}
            </span>
          </div>
@@ -1128,14 +1128,14 @@ async function refresh(){
              ${isSentView ? `
                <span class="status-badge ${statusClass(e.status)}">${e.status || 'unknown'}</span>
                <button class="btn btn-danger btn-sm" onclick="deleteSent(${e.id});event.stopPropagation()" title="删除记录">
-                 <span class="btn-icon">🗑️</span>
+                 <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
                </button>
              ` : `
                <button class="btn btn-secondary btn-sm" data-code="${listCode || ''}" onclick="copyFromList(event, ${e.id});event.stopPropagation()" title="复制内容或验证码">
-                 <span class="btn-icon">📋</span>
+                 <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
                </button>
                <button class="btn btn-danger btn-sm" onclick="deleteEmail(${e.id});event.stopPropagation()" title="删除邮件">
-                 <span class="btn-icon">🗑️</span>
+                 <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
                </button>
              `}
            </div>
@@ -1181,7 +1181,7 @@ window.showEmail = async (id) => {
       emailCache.set(id, email);
     }
     els.modalSubject.innerHTML = `
-      <span class="modal-icon">📧</span>
+      <span class="modal-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span>
       <span>${email.subject || '(无主题)'}</span>
     `;
     
@@ -1192,7 +1192,7 @@ window.showEmail = async (id) => {
     const code = extractCode(plainForCode);
     const downloadBtn = email.download ? `
       <a class="btn btn-ghost btn-sm" href="${email.download}" download>
-        <span class="btn-icon">⬇️</span>
+        <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
         <span>下载原始邮件</span>
       </a>` : '';
     const toLine = (email.to_addrs || email.recipients || '').toString();
@@ -1208,11 +1208,11 @@ window.showEmail = async (id) => {
       </div>
       <div class="email-actions-bar">
         <button class="btn btn-secondary btn-sm" data-code="${code || ''}" onclick="copyFromModal(event, ${id});event.stopPropagation()" title="${code ? '复制验证码' : '复制内容'}">
-          <span class="btn-icon">${code ? '🔐' : '📋'}</span>
+          <span class="btn-icon">${code ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>'}</span>
           <span>${code ? '复制验证码' : '复制内容'}</span>
         </button>
         <button class="btn btn-ghost btn-sm" onclick="copyEmailAllText(this)">
-          <span class="btn-icon">📄</span>
+          <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
           <span>复制全文</span>
         </button>
         ${downloadBtn}
@@ -1252,7 +1252,7 @@ window.showEmail = async (id) => {
       pre.textContent = rawText;
       host.appendChild(pre);
     } else {
-      host.innerHTML = '<div class="email-no-content">📭 此邮件暂无内容</div>';
+      host.innerHTML = '<div class="email-no-content"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> 此邮件暂无内容</div>';
     }
     els.modal.classList.add('show');
     await refresh();
@@ -1280,7 +1280,7 @@ window.copyEmailAllText = async (btn) => {
     await navigator.clipboard.writeText(text);
     if (btn){
       const origin = btn.innerHTML;
-      btn.innerHTML = '<span class="btn-icon">✅</span><span>已复制</span>';
+      btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span><span>已复制</span>';
       btn.disabled = true;
       setTimeout(()=>{ btn.innerHTML = origin; btn.disabled = false; }, 1200);
     }
@@ -1317,7 +1317,7 @@ window.copyEmailContentInModal = async (id, btn) => {
   try{
     await window.copyEmailContent(id);
     if (btn){
-      btn.innerHTML = '<span class="btn-icon">✅</span><span>已复制</span>';
+      btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span><span>已复制</span>';
       btn.disabled = true;
       setTimeout(()=>{ if (btn){ btn.innerHTML = original; btn.disabled = false; } }, 1200);
     }
@@ -1604,9 +1604,9 @@ async function loadMailboxes(options = {}){
             </div>
             <div class="mailbox-actions">
               <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${x.address}')" title="${x.is_pinned ? '取消置顶' : '置顶'}">
-                ${x.is_pinned ? '📌' : '📍'}
+                ${x.is_pinned ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'}
               </button>
-              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除">🗑️</button>
+              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
             </div>
           </div>`
         )).join('');
@@ -1626,9 +1626,9 @@ async function loadMailboxes(options = {}){
             </div>
             <div class="mailbox-actions">
               <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${x.address}')" title="${x.is_pinned ? '取消置顶' : '置顶'}">
-                ${x.is_pinned ? '📌' : '📍'}
+                ${x.is_pinned ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'}
               </button>
-              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除">🗑️</button>
+              <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
             </div>
           </div>`
         )).join('');
@@ -1665,9 +1665,9 @@ async function loadMailboxes(options = {}){
         </div>
         <div class="mailbox-actions">
           <button class="btn btn-ghost btn-sm pin" onclick="togglePin(event,'${x.address}')" title="${x.is_pinned ? '取消置顶' : '置顶'}">
-            ${x.is_pinned ? '📌' : '📍'}
+            ${x.is_pinned ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'}
           </button>
-          <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除">🗑️</button>
+          <button class="btn btn-ghost btn-sm del" onclick="deleteMailbox(event,'${x.address}')" title="删除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
         </div>
       </div>`
     )).join('');
@@ -1756,7 +1756,7 @@ window.togglePin = async (ev, address) => {
     
     if (response.ok) {
       const result = await response.json();
-      showToast(result.is_pinned ? '📌 邮箱已置顶' : '📍 已取消置顶', 'success');
+      showToast(result.is_pinned ? '邮箱已置顶' : '已取消置顶', 'success');
       
       // 重新加载邮箱列表以更新排序（重置到第一页）
       mbPage = 1;
@@ -1799,7 +1799,7 @@ window.deleteMailbox = async (ev, address) => {
         
         // 如果删除的是当前选中的邮箱，清空相关状态
         if (window.currentMailbox === address){
-          els.list.innerHTML = '<div style="text-align:center;color:#64748b">📭 暂无邮件</div>';
+          els.list.innerHTML = '<div style="text-align:center;color:#64748b"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg> 暂无邮件</div>';
           els.email.innerHTML = '<span class="placeholder-text">点击右侧生成按钮创建邮箱地址</span>';
           els.email.classList.remove('has-email');
           els.emailActions.style.display = 'none';
@@ -2014,7 +2014,7 @@ function switchToInbox(){
   if (els.tabInbox) els.tabInbox.setAttribute('aria-pressed', 'true');
   if (els.tabSent) els.tabSent.setAttribute('aria-pressed', 'false');
   if (els.boxTitle) els.boxTitle.textContent = '收件箱';
-  if (els.boxIcon) els.boxIcon.textContent = '📬';
+  if (els.boxIcon) els.boxIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>';
   const key = getViewKey();
   if (!viewLoaded.has(key)) { if (els.list) els.list.innerHTML = ''; }
   resetPager();
@@ -2026,7 +2026,7 @@ function switchToSent(){
   if (els.tabInbox) els.tabInbox.setAttribute('aria-pressed', 'false');
   if (els.tabSent) els.tabSent.setAttribute('aria-pressed', 'true');
   if (els.boxTitle) els.boxTitle.textContent = '发件箱';
-  if (els.boxIcon) els.boxIcon.textContent = '📤';
+  if (els.boxIcon) els.boxIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>';
   const key = getViewKey();
   if (!viewLoaded.has(key)) { if (els.list) els.list.innerHTML = ''; }
   resetPager();
@@ -2048,7 +2048,7 @@ window.showSentEmail = async (id) => {
     const r = await api(`/api/sent/${id}`);
     const email = await r.json();
     els.modalSubject.innerHTML = `
-      <span class="modal-icon">📤</span>
+      <span class="modal-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
       <span>${email.subject || '(无主题)'}</span>
     `;
     const bodyHtml = (email.html_content || email.text_content || '').toString();
@@ -2056,22 +2056,22 @@ window.showSentEmail = async (id) => {
       <div class="email-detail-container">
         <div class="email-meta-card">
           <div class="meta-item">
-            <span class="meta-icon">📤</span>
+            <span class="meta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
             <span class="meta-label">收件人</span>
             <span class="meta-value">${email.recipients}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-icon">👤</span>
+            <span class="meta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             <span class="meta-label">发件人</span>
             <span class="meta-value">${(email.from_name ? email.from_name + ' ' : '')}&lt;${window.currentMailbox}&gt;</span>
           </div>
           <div class="meta-item">
-            <span class="meta-icon">🕐</span>
+            <span class="meta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
             <span class="meta-label">时间</span>
             <span class="meta-value">${formatTs(email.created_at)}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-icon">📌</span>
+            <span class="meta-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
             <span class="meta-label">状态</span>
             <span class="meta-value">${email.status || 'unknown'}</span>
           </div>
@@ -2131,7 +2131,7 @@ window.copyCodeInModal = async (code, btn) => {
     await navigator.clipboard.writeText(String(code||''));
     if (btn){
       const origin = btn.innerHTML;
-      btn.innerHTML = '<span class="btn-icon">✅</span><span>已复制验证码</span>';
+      btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span><span>已复制验证码</span>';
       btn.disabled = true;
       setTimeout(()=>{ btn.innerHTML = origin; btn.disabled = false; }, 1200);
     }
@@ -2153,9 +2153,9 @@ window.copyFromList = async (ev, id) => {
     if (code){
       await navigator.clipboard.writeText(code);
       const original = btn.innerHTML;
-      btn.innerHTML = '<span class="btn-icon">✅</span>';
+      btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>';
       btn.disabled = true;
-      setTimeout(()=>{ btn.innerHTML = '<span class="btn-icon">📋</span>'; btn.disabled = false; }, 800);
+      setTimeout(()=>{ btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>'; btn.disabled = false; }, 800);
       try{ await showToast('已复制验证码：' + code, 'success'); }catch(_){ }
       return;
     }
@@ -2172,7 +2172,7 @@ window.copyFromModal = async (ev, id) => {
     if (code){
       await navigator.clipboard.writeText(code);
       const original = btn.innerHTML;
-      btn.innerHTML = '<span class="btn-icon">✅</span><span>已复制</span>';
+      btn.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span><span>已复制</span>';
       btn.disabled = true;
       setTimeout(()=>{ btn.innerHTML = original; btn.disabled = false; }, 1200);
       try{ await showToast('已复制验证码：' + code, 'success'); }catch(_){ }

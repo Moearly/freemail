@@ -4,9 +4,9 @@ import { getOrCreateMailboxId, getMailboxIdByAddress, recordSentEmail, updateSen
   listUsersWithCounts, createUser, updateUser, deleteUser, assignMailboxToUser, getUserMailboxes, unassignMailboxFromUser, 
   checkMailboxOwnership, getTotalMailboxCount } from './database.js';
 import { parseEmailBody, extractVerificationCode } from './emailParser.js';
-import { sendEmailWithResend, sendBatchWithResend, sendEmailWithAutoResend, sendBatchWithAutoResend, getEmailFromResend, updateEmailInResend, cancelEmailInResend } from './emailSender.js';
+import { sendEmailWithResend, sendBatchWithResend, sendEmailWithAutoResend, sendBatchWithAutoResend, getEmailFromResend, updateEmailInResend, cancelEmailInResend, sendEmailUnified } from './emailSender.js';
 
-export async function handleApiRequest(request, db, mailDomains, options = { mockOnly: false, resendApiKey: '', adminName: '', r2: null, authPayload: null, mailboxOnly: false }) {
+export async function handleApiRequest(request, db, mailDomains, options = { mockOnly: false, resendApiKey: '', adminName: '', r2: null, authPayload: null, mailboxOnly: false, env: null }) {
   const url = new URL(request.url);
   const path = url.pathname;
   const isMock = !!options.mockOnly;
@@ -473,12 +473,14 @@ export async function handleApiRequest(request, db, mailDomains, options = { moc
     }
   }
 
-  // 发送单封邮件
+  // 发送单封邮件（支持 Resend + Microsoft Graph 双通道）
   if (path === '/api/send' && request.method === 'POST'){
     if (isMock) return new Response('演示模式不可发送', { status: 403 });
     try{
-      if (!RESEND_API_KEY) return new Response('未配置 Resend API Key', { status: 500 });
-      // 校验是否允许发件：根据当前登录用户（从 Cookie 读取 JWT）
+      const envObj = options.env || {};
+      const hasResend = !!RESEND_API_KEY;
+      const hasMs = !!(envObj.MS_ACCOUNTS);
+      if (!hasResend && !hasMs) return new Response('未配置任何发件服务（Resend 或 Microsoft）', { status: 500 });
       const cookie = request.headers.get('Cookie') || '';
       const token = (cookie.split(';').find(s=>s.trim().startsWith('iding-session='))||'').split('=')[1] || '';
       let jwtPayload = null;
@@ -494,14 +496,12 @@ export async function handleApiRequest(request, db, mailDomains, options = { moc
         const canSend = results?.[0]?.can_send ? 1 : 0;
         if (!canSend) return new Response('该用户未被授予发件权限', { status: 403 });
       } else if (jwtPayload && jwtPayload.role === 'admin'){
-        // 管理员默认允许
       } else {
-        // 无用户身份或访客不允许
         return new Response('未授权发件', { status: 403 });
       }
       const sendPayload = await request.json();
-      // 使用智能发送，根据发件人域名自动选择API密钥
-      const result = await sendEmailWithAutoResend(RESEND_API_KEY, sendPayload);
+      const mergedEnv = { ...envObj, RESEND_API_KEY, RESEND_TOKEN: RESEND_API_KEY };
+      const result = await sendEmailUnified(mergedEnv, sendPayload);
       await ensureSentEmailsTable(db);
       await recordSentEmail(db, {
         resendId: result.id || null,
@@ -514,7 +514,7 @@ export async function handleApiRequest(request, db, mailDomains, options = { moc
         status: 'delivered',
         scheduledAt: sendPayload.scheduledAt || null
       });
-      return Response.json({ success: true, id: result.id });
+      return Response.json({ success: true, id: result.id, provider: result.provider || 'resend' });
     }catch(e){
       return new Response('发送失败: ' + e.message, { status: 500 });
     }

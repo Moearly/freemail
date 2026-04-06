@@ -37,21 +37,21 @@ try{
   function getRedirectTarget(){
     try{ 
       const u = new URL(location.href); 
-      let redirectParam = u.searchParams.get('redirect') || '/';
+      let redirectParam = u.searchParams.get('redirect') || '/app';
       // 优先从 sessionStorage 读取在来源页保存的 hash
       let preservedHash = '';
       try{ preservedHash = sessionStorage.getItem('mf:preservedHash') || ''; }catch(_){ }
       // 当前页若也带有 hash 作为兜底
       const currentHash = location.hash || '';
       const hashToUse = preservedHash || currentHash;
-      if ((redirectParam === '/' || redirectParam === '/html/app.html') && hashToUse) {
+      if ((redirectParam === '/app' || redirectParam === '/' || redirectParam === '/html/app.html') && hashToUse) {
         return redirectParam + hashToUse;
       }
       return redirectParam;
     }catch(_){ 
       // 发生错误时，优先使用已保存的 hash
-      try{ const ph = sessionStorage.getItem('mf:preservedHash'); if (ph) return '/' + ph; }catch(_){ }
-      return location.hash ? '/' + location.hash : '/'; 
+      try{ const ph = sessionStorage.getItem('mf:preservedHash'); if (ph) return '/app' + ph; }catch(_){ }
+      return location.hash ? '/app' + location.hash : '/app'; 
     }
   }
   function hasRedirectParam(){
@@ -120,8 +120,8 @@ try{
                 });
                 clearTimeout(tid);
                 if (r && r.ok) {
-                  // cookie有效，跳转
-                  var target = '/';
+                  // cookie有效，跳转到 App
+                  var target = '/app';
                   try{
                     var ph = sessionStorage.getItem('mf:preservedHash') || '';
                     if (!ph && location.hash) ph = location.hash;
@@ -138,8 +138,8 @@ try{
             })();
             return true;
           } else {
-            // 直接访问登录页且有cookie，立即跳转
-            var target = '/';
+            // 直接访问登录页且有cookie，立即跳转到 App
+            var target = '/app';
             try{
               var ph = sessionStorage.getItem('mf:preservedHash') || '';
               if (!ph && location.hash) ph = location.hash;
@@ -210,9 +210,9 @@ try{
         // 非直达则尽快返回目标或首页
         try{
           const u = new URL(location.href);
-          const target = u.searchParams.get('redirect') || '/';
+          const target = u.searchParams.get('redirect') || '/app';
           window.location.replace(target);
-        }catch(_){ window.location.replace('/'); }
+        }catch(_){ window.location.replace('/app'); }
       }
     });
   }

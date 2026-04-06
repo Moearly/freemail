@@ -24,7 +24,7 @@ async function doLogin(){
   try{
     // 目标页：优先使用登录页上的 redirect 参数
     const target = (function(){
-      try{ const u=new URL(location.href); const t=(u.searchParams.get('redirect')||'').trim(); return t || '/'; }catch(_){ return '/'; }
+      try{ const u=new URL(location.href); const t=(u.searchParams.get('redirect')||'').trim(); return t || '/app'; }catch(_){ return '/app'; }
     })();
     
     // 等待登录请求完成，提高成功率

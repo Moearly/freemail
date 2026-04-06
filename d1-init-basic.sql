@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS user_mailboxes (
   user_id INTEGER NOT NULL,
   mailbox_id INTEGER NOT NULL,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  is_pinned INTEGER NOT NULL DEFAULT 0,
   UNIQUE(user_id, mailbox_id),
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY(mailbox_id) REFERENCES mailboxes(id) ON DELETE CASCADE

@@ -1,6 +1,6 @@
 /* 邮箱用户专用样式 */
 
-/* 基础变量继承主样式 */
+/* 基础变量 - 浅色 */
 :root {
   --surface: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 20%, #f1f5f9 100%);
   --surface-overlay: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.9) 100%);
@@ -30,6 +30,205 @@
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.15);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 深色模式变量覆盖 */
+[data-theme="dark"] {
+  --surface: #060611;
+  --surface-overlay: rgba(12, 12, 29, 0.9);
+  --card: rgba(255, 255, 255, 0.04);
+  --card-hover: rgba(255, 255, 255, 0.07);
+  --card-glass: rgba(255, 255, 255, 0.03);
+  --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: rgba(99, 102, 241, 0.15);
+  --primary-glass: rgba(99, 102, 241, 0.08);
+  --success: #10b981;
+  --success-light: rgba(16, 185, 129, 0.15);
+  --warning: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-light: rgba(239, 68, 68, 0.15);
+  --text: #f1f5f9;
+  --text-light: #94a3b8;
+  --text-muted: #64748b;
+  --text-secondary: #64748b;
+  --muted: #64748b;
+  --muted2: #475569;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.03);
+  --border-glass: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(99, 102, 241, 0.4);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glass: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-colored: 0 8px 25px rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="dark"] body {
+  background: #060611;
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .topbar {
+  background: rgba(12, 12, 29, 0.8);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .brand {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .btn-ghost {
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .btn-primary {
+  background: rgba(99, 102, 241, 0.9);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background: rgba(79, 70, 229, 0.9);
+}
+
+[data-theme="dark"] .role-badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+[data-theme="dark"] .mailbox-info-card,
+[data-theme="dark"] .inbox-card,
+[data-theme="dark"] .card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .card h2,
+[data-theme="dark"] .listcard-title {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .mailbox-display {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .mailbox-address {
+  color: #818cf8;
+}
+
+[data-theme="dark"] .chip {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .chip-unread {
+  color: #818cf8;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+[data-theme="dark"] .chip-total {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .toggle {
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .select-sm,
+[data-theme="dark"] .input-sm {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .empty-title {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .empty-description {
+  color: #64748b;
+}
+
+/* 深色模式 - 模态框 */
+[data-theme="dark"] .modal {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .modal-card {
+  background: rgba(15, 15, 35, 0.95);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .modal-header {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .modal-header div {
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .modal-body {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .close {
+  color: #64748b;
+}
+
+[data-theme="dark"] .close:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+}
+
+/* 深色模式 - 表单 */
+[data-theme="dark"] .form-group label {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .form-group .input {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .form-group .input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+[data-theme="dark"] .form-group .input::placeholder {
+  color: #475569;
+}
+
+[data-theme="dark"] #footer-slot {
+  color: #475569;
 }
 
 * {

@@ -1,24 +1,25 @@
 <div class="topbar">
   <div class="brand">
-    <span class="brand-icon">📧</span>
-    <span class="brand-text">iDing's临时邮箱</span>
+    <span class="brand-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span>
+    <span class="brand-text">FreeMail</span>
   </div>
   <div id="role-badge" class="role-badge" title="欢迎用户："></div>
   <div class="nav-actions">
     <a id="repo" class="btn btn-ghost" href="https://github.com/idinging/freemail" target="_blank" rel="noopener noreferrer" title="GitHub 开源仓库">
-      <span class="btn-icon">🔗</span>
+      <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
       <span class="btn-text">GitHub</span>
     </a>
     <a id="admin" class="btn btn-ghost" href="/templates/loading.html?redirect=%2Fadmin.html&status=%E6%AD%A3%E5%9C%A8%E6%A0%A1%E9%AA%8C%E6%9D%83%E9%99%90%E2%80%A6" title="用户管理" style="display:none">
-      <span class="btn-icon">🛠️</span>
+      <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span>
       <span class="btn-text">用户管理</span>
     </a>
     <a id="all-mailboxes" class="btn btn-ghost" href="/templates/loading.html?redirect=%2Fhtml%2Fmailboxes.html&status=%E6%AD%A3%E5%9C%A8%E6%89%93%E5%BC%80%E9%82%AE%E7%AE%B1%E6%80%BB%E8%A7%88%E9%A1%B5%E9%9D%A2%E2%80%A6" title="所有邮箱" style="display:none">
-      <span class="btn-icon">📦</span>
+      <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
       <span class="btn-text">所有邮箱</span>
     </a>
+    <button id="theme-toggle" class="btn btn-ghost" title="切换主题" onclick="window.__themeToggle && window.__themeToggle()"><span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span><span class="btn-text">主题</span></button>
     <button id="logout" class="btn btn-secondary" title="退出登录">
-      <span class="btn-icon">🚪</span>
+      <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
       <span class="btn-text">退出登录</span>
     </button>
   </div>
@@ -28,7 +29,7 @@
     <div class="sidebar">
       <div class="sidebar-header">
         <h3>
-          <span class="sidebar-icon">📨</span>
+          <span class="sidebar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></span>
           <span class="sidebar-title">历史邮箱</span>
         </h3>
         <div class="sidebar-header-actions">
@@ -42,7 +43,7 @@
         </div>
       </div>
       <div class="sidebar-search">
-        <input id="mb-search" class="input sidebar-search-input" placeholder="搜索历史邮箱" />
+        <input id="mb-search" class="input sidebar-search-input" placeholder="搜索历史邮箱…" />
       </div>
       <div id="mb-list"></div>
       <div id="mb-loading" style="margin-top:12px"></div>
@@ -55,7 +56,7 @@
     <div class="main">
       <div class="card generate-card">
         <h2>
-          <span class="card-icon">✨</span>
+          <span class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
           生成临时邮箱
         </h2>
         
@@ -64,7 +65,7 @@
           <div class="mailbox-display-section">
             <div class="mailbox-display-content">
               <div class="section-header">
-                <span class="section-icon">📧</span>
+                <span class="section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span>
                 <span class="section-title">当前邮箱</span>
               </div>
               <div id="email" class="email-display">
@@ -77,20 +78,20 @@
             </div>
             <div class="mailbox-actions" id="email-actions" style="display:none">
               <button id="copy" class="btn btn-secondary" style="width:100%">
-                <span class="btn-icon">📋</span>
-                <span>复制邮箱 ✨</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
+                <span>复制邮箱</span>
               </button>
               <button id="compose" class="btn btn-primary" style="width:100%">
-                <span class="btn-icon">✉️</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
                 <span>发邮件</span>
               </button>
               <button id="clear" class="btn btn-danger" style="width:100%">
-                <span class="btn-icon">🗑️</span>
-                <span>清空邮件 💥</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
+                <span>清空邮件</span>
               </button>
               <button id="refresh" class="btn btn-ghost" style="width:100%">
-                <span class="btn-icon">🔄</span>
-                <span>刷新邮件 📬</span>
+                <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span>
+                <span>刷新邮件</span>
               </button>
             </div>
           </div>
@@ -98,7 +99,7 @@
           <!-- 右侧：邮箱配置 -->
           <div class="mailbox-config-section">
             <div class="section-header">
-              <span class="section-icon">⚙️</span>
+              <span class="section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
               <span class="section-title">邮箱配置</span>
               <button id="config-toggle" class="sidebar-toggle-btn" title="展开/收起配置">
                 <span id="config-toggle-icon">▾</span>
@@ -107,14 +108,14 @@
             <div class="config-form">
               <div class="config-item">
                 <label class="config-label">
-                  <span class="label-icon">🌐</span>
+                  <span class="label-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg></span>
                   <span>邮箱后缀</span>
                 </label>
                 <select id="domain-select" class="select config-select"></select>
               </div>
               <div class="config-item">
                 <label class="config-label">
-                  <span class="label-icon">📏</span>
+                  <span class="label-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg></span>
                   <span>用户名长度</span>
                 </label>
                 <div class="range-container">
@@ -128,11 +129,11 @@
                <div class="generate-action">
                  <div class="generate-buttons" style="display: flex; gap: 8px; margin-bottom: 8px; width: 100%;">
                    <button id="gen" class="btn btn-generate" style="flex: 1;">
-                     <span class="btn-icon">🎲</span>
+                     <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg></span>
                      <span>随机生成</span>
                    </button>
                    <button id="gen-name" class="btn btn-primary" style="flex: 1;" title="使用随机人名生成邮箱">
-                     <span class="btn-icon">👤</span>
+                     <span class="btn-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                      <span>随机人名</span>
                    </button>
                  </div>
@@ -145,7 +146,7 @@
       <div class="card inbox-card" id="list-card" style="display:none">
         <div class="listcard-header">
           <h2 class="listcard-title">
-            <span class="card-icon" id="box-icon">📬</span>
+            <span class="card-icon" id="box-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></span>
             <span id="box-title">收件箱</span>
           </h2>
           <div class="view-switch">
@@ -175,7 +176,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <div id="modal-subject">
-          <span class="modal-icon">📧</span>
+          <span class="modal-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></span>
           <span>邮件详情</span>
         </div>
         <button id="modal-close" class="close">✕</button>
@@ -190,7 +191,7 @@
     <div class="modal-card confirm-card">
       <div class="modal-header confirm-header">
         <div>
-          <span class="modal-icon">⚠️</span>
+          <span class="modal-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
           <span>确认操作</span>
         </div>
         <button id="confirm-close" class="close">✕</button>
@@ -209,7 +210,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <span class="modal-icon">✉️</span>
+          <span class="modal-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
           <span>新邮件</span>
         </div>
         <button id="compose-close" class="close">✕</button>
@@ -223,7 +224,7 @@
           </div>
           <div class="field-group">
             <label class="field-label">发件名称（可选）</label>
-            <input id="compose-from-name" class="input field-input" type="text" placeholder="例如：iDing 支持团队" />
+            <input id="compose-from-name" class="input field-input" type="text" placeholder="例如：FreeMail 支持团队" />
           </div>
           <div class="field-group">
             <label class="field-label">主题</label>
@@ -241,7 +242,3 @@
       </div>
     </div>
   </div>
-
-  
-
-

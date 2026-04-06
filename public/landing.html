@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FreeMail - Free Temporary Email Address | Disposable Email</title>
+  <meta name="description" content="Generate free disposable temporary email addresses instantly. No registration required. Protect your privacy, avoid spam, and auto-extract verification codes." />
+  <meta name="keywords" content="temporary email, disposable email, temp mail, free email, anonymous email, verification code, spam protection" />
+  <meta name="mail-domains" content="">
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="/" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="FreeMail - Free Temporary Email Address" />
+  <meta property="og:description" content="Instant disposable email. No signup. Auto-extract verification codes." />
+  <meta property="og:type" content="website" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/landing.css" />
+</head>
+<body>
+  <!-- Background grid + glow decorations -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--3" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner container">
+      <a href="/" class="logo" aria-label="FreeMail Home">
+        <svg class="logo-svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#logo-grad)"/>
+          <path d="M6 10l10 8 10-8M6 22h20V10H6v12z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+        </svg>
+        <span class="logo-text">FreeMail</span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="#features" class="nav-link" data-i18n="nav.features">Features</a>
+        <a href="#how-it-works" class="nav-link" data-i18n="nav.howItWorks">How It Works</a>
+        <a href="#faq" class="nav-link" data-i18n="nav.faq">FAQ</a>
+        <div class="nav-divider"></div>
+        <button class="nav-btn nav-btn--icon" id="btn-lang" title="Switch Language" aria-label="Switch Language">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+          <span id="lang-label">EN</span>
+        </button>
+        <button class="nav-btn nav-btn--icon" id="btn-theme" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+        <a href="/app" class="nav-btn nav-btn--outline" data-i18n="nav.admin">Admin Login</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <a href="#features" class="mobile-menu-link" data-i18n="nav.features">Features</a>
+      <a href="#how-it-works" class="mobile-menu-link" data-i18n="nav.howItWorks">How It Works</a>
+      <a href="#faq" class="mobile-menu-link" data-i18n="nav.faq">FAQ</a>
+      <a href="/app" class="mobile-menu-link" data-i18n="nav.admin">Admin Login</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content container">
+      <div class="hero-badge" data-i18n="hero.badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Secure & Private Temporary Email</div>
+      <h1 class="hero-title" data-i18n="hero.title">Your Privacy,<br>Our Priority</h1>
+      <p class="hero-subtitle" data-i18n="hero.subtitle">Generate secure, disposable email addresses instantly. No registration required. Auto-extract verification codes with one click.</p>
+
+      <!-- Email Generator Card -->
+      <div class="generator-card" id="generator">
+        <div class="generator-card__glow" aria-hidden="true"></div>
+        <div class="email-display-area">
+          <div class="email-box" id="email-box">
+            <svg class="email-box__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+            <span class="email-placeholder" id="email-placeholder" data-i18n="generator.placeholder">Click "Generate" to create an email</span>
+            <span class="email-address" id="email-address" style="display:none"></span>
+          </div>
+          <div class="email-actions">
+            <button class="btn-icon" id="btn-copy" title="Copy" aria-label="Copy email" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+            <button class="btn-icon" id="btn-refresh-inbox" title="Refresh Inbox" aria-label="Refresh inbox" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="gen-controls">
+          <div class="gen-row">
+            <div class="select-wrapper">
+              <select id="domain-select" class="select-field" aria-label="Domain"></select>
+              <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="select-wrapper">
+              <label class="select-label" for="timer" data-i18n="generator.expires">Expires in</label>
+              <select id="timer" class="select-field" aria-label="Expiration time">
+                <option value="10" data-i18n="generator.10min">10 Minutes</option>
+                <option value="30" data-i18n="generator.30min">30 Minutes</option>
+                <option value="60" selected data-i18n="generator.1hour">1 Hour</option>
+              </select>
+              <svg class="select-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="gen-buttons">
+            <button class="btn btn--primary btn--lg" id="btn-generate">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 7l-10 7L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+              <span data-i18n="generator.generate">Generate Email</span>
+            </button>
+            <button class="btn btn--ghost btn--lg" id="btn-generate-name">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span data-i18n="generator.randomName">Random Name</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown Timer -->
+      <div class="countdown" id="countdown" style="display:none">
+        <div class="countdown-bar" id="countdown-bar"></div>
+        <div class="countdown-info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="countdown-text">Expires in --:--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inbox Section -->
+  <section class="inbox-section" id="inbox-section">
+    <div class="container container--narrow">
+      <div class="inbox-header">
+        <h2 class="inbox-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+          <span data-i18n="inbox.title">Inbox</span>
+          <span class="badge" id="inbox-count">0</span>
+        </h2>
+        <button class="btn-icon" id="btn-refresh-inbox2" title="Refresh inbox" aria-label="Refresh inbox">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+        </button>
+      </div>
+      <div class="inbox-list" id="inbox-list">
+        <div class="inbox-empty">
+          <div class="inbox-empty-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+          </div>
+          <p data-i18n="inbox.waiting">Waiting for incoming emails...</p>
+          <p class="inbox-empty-hint" data-i18n="inbox.autoRefresh">Auto-refresh every 5 seconds</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Email Detail Modal -->
+  <div class="modal-overlay" id="email-modal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 id="modal-subject">Email Detail</h3>
+        <button class="modal-close" id="modal-close" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge" data-i18n="features.badge">WHY FREEMAIL</span>
+        <h2 class="section-title" data-i18n="features.title">Why Choose FreeMail?</h2>
+        <p class="section-desc" data-i18n="features.desc">Everything you need for secure, private temporary email — completely free.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 data-i18n="features.f1.title">No Sign-up Required</h3>
+          <p data-i18n="features.f1.desc">Use temporary addresses with no account required. Works instantly — no personal data needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon--accent">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3 data-i18n="features.f2.title">Auto-Extract Codes</h3>
+          <p data-i18n="features.f2.desc">Automatically detect and highlight verification codes from emails. One-click copy to clipboard.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon--green">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <h3 data-i18n="features.f3.title">Completely Free</h3>
+          <p data-i18n="features.f3.desc">No hidden fees, no limitations. Use as many addresses as you need, forever free.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon--purple">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <h3 data-i18n="features.f4.title">Privacy First</h3>
+          <p data-i18n="features.f4.desc">No personal data stored. All emails are automatically deleted after expiration.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon--red">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3 data-i18n="features.f5.title">Self-Destructing</h3>
+          <p data-i18n="features.f5.desc">Your email address and all messages expire automatically. No trace left behind.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon feature-icon--teal">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+          </div>
+          <h3 data-i18n="features.f6.title">Multiple Domains</h3>
+          <p data-i18n="features.f6.desc">Choose from multiple email domains for different use cases and better compatibility.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge" data-i18n="howItWorks.badge">GETTING STARTED</span>
+        <h2 class="section-title" data-i18n="howItWorks.title">How It Works</h2>
+        <p class="section-desc" data-i18n="howItWorks.desc">Get a disposable email in seconds — it's as easy as 1-2-3.</p>
+      </div>
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-line" aria-hidden="true"></div>
+          <h3 data-i18n="howItWorks.s1.title">Generate an Email</h3>
+          <p data-i18n="howItWorks.s1.desc">Click "Generate" and get a temporary email address instantly. No registration needed.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-line" aria-hidden="true"></div>
+          <h3 data-i18n="howItWorks.s2.title">Use It Anywhere</h3>
+          <p data-i18n="howItWorks.s2.desc">Copy the address and use it for sign-ups, verifications, or any one-off communication.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 data-i18n="howItWorks.s3.title">Receive & Read</h3>
+          <p data-i18n="howItWorks.s3.desc">Emails appear in your inbox in real-time. Verification codes are auto-extracted for you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq" id="faq">
+    <div class="container container--narrow">
+      <div class="section-header">
+        <span class="section-badge" data-i18n="faq.badge">FAQ</span>
+        <h2 class="section-title" data-i18n="faq.title">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary data-i18n="faq.q1.q">What is a temporary email address?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q1.a">A temporary email address is a disposable email account that allows you to receive emails without revealing your personal email. Perfect for sign-ups, verifications, and avoiding spam.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q2.q">How long does a temporary email last?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q2.a">You can choose from 10 minutes, 30 minutes, or 1 hour. After expiration, the address and all messages are automatically deleted.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q3.q">Is this service completely free?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q3.a">Yes! FreeMail is 100% free to use. No registration required, no hidden fees, and no limitations on the number of emails you can receive.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q4.q">Can verification codes be auto-extracted?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q4.a">Yes! FreeMail automatically detects verification codes, OTP codes, and activation codes from incoming emails and highlights them for one-click copying.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q5.q">Is my data secure?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q5.a">Absolutely. We don't store personal information. All emails are automatically deleted after expiration. Our service runs on Cloudflare's global edge network for maximum security and speed.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q6.q">Can I reply to emails?</summary>
+          <div class="faq-answer"><p data-i18n="faq.q6.a">Currently, FreeMail is designed for receiving emails only. This helps prevent spam and maintain anonymity.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="/" class="logo" aria-label="FreeMail">
+            <svg class="logo-svg" width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="url(#logo-grad2)"/>
+              <path d="M6 10l10 8 10-8M6 22h20V10H6v12z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <defs><linearGradient id="logo-grad2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+            </svg>
+            <span class="logo-text">FreeMail</span>
+          </a>
+          <p class="footer-tagline" data-i18n="footer.tagline">Secure, private, and always free.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#features" data-i18n="nav.features">Features</a>
+          <a href="#how-it-works" data-i18n="nav.howItWorks">How It Works</a>
+          <a href="#faq" data-i18n="nav.faq">FAQ</a>
+          <a href="/app" data-i18n="nav.admin">Admin</a>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; <span id="footer-year"></span> FreeMail. <span data-i18n="footer.rights">All rights reserved.</span></p>
+          <p class="footer-powered" data-i18n="footer.powered">Powered by Cloudflare Workers</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <script src="/js/landing.js" type="module"></script>
+</body>
+</html>

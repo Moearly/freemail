@@ -61,16 +61,23 @@ export default {
    * @returns {Promise<void>} 处理完成后无返回值
    */
   async email(message, env, ctx) {
-    let DB;
     try {
-      DB = await getDatabaseWithValidation(env);
-      await initDatabase(DB);
-    } catch (error) {
-      console.error('邮件处理时数据库连接失败:', error.message);
-      return; // 邮件处理失败，静默失败
-    }
+      console.log('=== Email handler started ===');
+      console.log('From:', message.from);
+      console.log('To:', message.to);
+      console.log('Subject:', message.headers.get('subject'));
+      
+      let DB;
+      try {
+        DB = await getDatabaseWithValidation(env);
+        await initDatabase(DB);
+        console.log('Database connected successfully');
+      } catch (error) {
+        console.error('邮件处理时数据库连接失败:', error.message);
+        console.error('Error stack:', error.stack);
+        return; // 改为 return 而不是 throw
+      }
 
-    try {
       const headers = message.headers;
       const toHeader = headers.get('to') || headers.get('To') || '';
       const fromHeader = headers.get('from') || headers.get('From') || '';
@@ -90,7 +97,11 @@ export default {
       const resolvedRecipientAddr = extractEmail(resolvedRecipient);
       const localPart = (resolvedRecipientAddr.split('@')[0] || '').toLowerCase();
 
-      forwardByLocalPart(message, localPart, ctx, env);
+      try {
+        forwardByLocalPart(message, localPart, ctx, env);
+      } catch (e) {
+        console.error('Forward error:', e);
+      }
 
       // 读取原始 EML（用于存入 R2）与解析文本/HTML 以生成摘要
       let textContent = '';
@@ -196,9 +207,90 @@ export default {
 
       const placeholders = insertCols.map(()=>'?').join(', ');
       const sql = `INSERT INTO messages (${insertCols.join(', ')}) VALUES (${placeholders})`;
+      console.log('Inserting message with SQL:', sql);
+      console.log('Values:', values);
       await DB.prepare(sql).bind(...values).run();
+      console.log('=== Email handler completed successfully ===');
     } catch (err) {
-      console.error('Email event handling error:', err);
+      console.error('=== EMAIL HANDLER FAILED ===');
+      console.error('Error message:', err.message);
+      console.error('Error stack:', err.stack);
+      console.error('Error details:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      // 不抛出错误,让 Cloudflare 认为处理成功
+    }
+  },
+
+  /**
+   * 定时任务处理器（Cron Trigger），自动清理过期邮箱和邮件
+   */
+  async scheduled(event, env, ctx) {
+    let DB;
+    try {
+      DB = await getDatabaseWithValidation(env);
+      await initDatabase(DB);
+    } catch (error) {
+      console.error('Scheduled: 数据库连接失败:', error.message);
+      return;
+    }
+
+    const EXPIRE_HOURS = parseInt(env.MAIL_EXPIRE_HOURS || '24', 10);
+    const cutoff = new Date(Date.now() - EXPIRE_HOURS * 3600 * 1000).toISOString();
+    const r2 = env.MAIL_EML;
+
+    try {
+      // 1. 清理过期邮件的 R2 对象
+      const expiredMsgs = await DB.prepare(
+        `SELECT m.id, m.r2_object_key FROM messages m
+         JOIN mailboxes mb ON m.mailbox_id = mb.id
+         WHERE mb.is_pinned = 0 AND mb.expires_at IS NOT NULL AND mb.expires_at < ?
+         UNION
+         SELECT m.id, m.r2_object_key FROM messages m
+         JOIN mailboxes mb ON m.mailbox_id = mb.id
+         WHERE mb.is_pinned = 0 AND mb.expires_at IS NULL AND mb.created_at < ?`
+      ).bind(cutoff, cutoff).all();
+
+      const msgIds = [];
+      const r2Keys = [];
+      for (const row of (expiredMsgs?.results || [])) {
+        msgIds.push(row.id);
+        if (row.r2_object_key) r2Keys.push(row.r2_object_key);
+      }
+
+      // 批量删除 R2 对象（每批 100）
+      if (r2 && r2Keys.length > 0) {
+        for (let i = 0; i < r2Keys.length; i += 100) {
+          const batch = r2Keys.slice(i, i + 100);
+          await Promise.allSettled(batch.map(key => r2.delete(key)));
+        }
+        console.log(`Scheduled: 清理了 ${r2Keys.length} 个 R2 对象`);
+      }
+
+      // 2. 删除过期邮件记录
+      if (msgIds.length > 0) {
+        for (let i = 0; i < msgIds.length; i += 100) {
+          const batch = msgIds.slice(i, i + 100);
+          const placeholders = batch.map(() => '?').join(',');
+          await DB.prepare(`DELETE FROM messages WHERE id IN (${placeholders})`).bind(...batch).run();
+        }
+        console.log(`Scheduled: 删除了 ${msgIds.length} 条过期邮件`);
+      }
+
+      // 3. 删除没有邮件的过期邮箱（未钉住的）
+      const deletedMb = await DB.prepare(
+        `DELETE FROM mailboxes WHERE is_pinned = 0 AND id NOT IN (SELECT DISTINCT mailbox_id FROM messages)
+         AND ((expires_at IS NOT NULL AND expires_at < ?) OR (expires_at IS NULL AND created_at < ?))`
+      ).bind(cutoff, cutoff).run();
+      console.log(`Scheduled: 清理了 ${deletedMb?.meta?.changes || 0} 个过期邮箱`);
+
+      // 4. 清理过期的发送记录
+      const sentCutoff = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+      try {
+        await DB.prepare(`DELETE FROM sent_emails WHERE created_at < ?`).bind(sentCutoff).run();
+      } catch (_) {}
+
+      console.log('Scheduled: 清理任务完成');
+    } catch (error) {
+      console.error('Scheduled: 清理失败:', error.message);
     }
   }
 };

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>登录 - 临时邮箱</title>
+    <title>登录 - FreeMail</title>
     <style>.precheck-hide body{ visibility: hidden; }</style>
+    <script src="/js/theme.js"></script>
     <script>
       // 立即检查登录状态（在任何其他脚本之前）
       (function(){
@@ -29,7 +30,7 @@
                 });
                 clearTimeout(tid);
                 if (r && r.ok){
-                  location.replace('/');
+                  location.replace('/app');
                 } else {
                   // cookie无效，清除它
                   document.cookie = 'iding-session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -41,7 +42,7 @@
             return;
           } else if (hasToken && !document.referrer) {
             // 直接访问登录页且有cookie，立即重定向
-            location.replace('/');
+            location.replace('/app');
             return;
           }
           
@@ -52,7 +53,7 @@
             credentials: 'include'
           }).then(function(r){
             if (r && r.ok){
-              location.replace('/');
+              location.replace('/app');
             }
           }).catch(function(){ 
             // 会话检查失败，保持在登录页面
@@ -88,7 +89,7 @@
           })
             .then(function(r){
               clearTimeout(tid);
-              if (r && r.ok){ location.replace('/'); return; }
+              if (r && r.ok){ location.replace('/app'); return; }
               document.documentElement.classList.remove('precheck-hide');
             })
             .catch(function(){ try{ document.documentElement.classList.remove('precheck-hide'); }catch(_){ } });
@@ -101,18 +102,25 @@
     <script src="/js/mock.js"></script>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/login.css" />
   </head>
   <body>
     <div class="bg"></div>
     <div class="center">
       <div class="card">
-        <div class="logo">🔐</div>
-        <h1>登录到临时邮箱</h1>
+        <button class="theme-toggle" onclick="window.__themeToggle && window.__themeToggle()" aria-label="切换主题">
+          <span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+          <span class="icon-moon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+        </button>
+        <div class="logo"><svg width="48" height="48" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#login-logo-grad)"/><path d="M6 10l10 8 10-8M6 22h20V10H6v12z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><defs><linearGradient id="login-logo-grad" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs></svg></div>
+        <h1>登录到 FreeMail</h1>
         <div id="err" class="err"></div>
         <input id="username" class="input" type="text" placeholder="用户名/邮箱" />
         <input id="pwd" class="input" type="password" placeholder="密码" />
-        <div style="font-size:12px;color:#64748b;margin-bottom:8px">
+        <div style="font-size:12px;color:var(--hint-color, #64748b);margin-bottom:8px">
           账号：guest，密码： admin，将进入观看模式。
         </div>
         <button id="login" class="btn">登录</button>

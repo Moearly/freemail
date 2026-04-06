@@ -91,7 +91,7 @@
               existingEnter.className = 'btn btn-primary';
               existingEnter.style.width = '100%';
               existingEnter.style.marginTop = '0';
-              existingEnter.innerHTML = '<span class="btn-icon">📬</span><span>进入邮箱</span>';
+              existingEnter.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></span><span>进入邮箱</span>';
               actions.appendChild(existingEnter);
               existingEnter.onclick = function(){
                 try{
@@ -162,7 +162,7 @@
                     iconBtn.style.alignItems = 'center';
                     iconBtn.style.justifyContent = 'center';
                     iconBtn.style.padding = '0';
-                    iconBtn.innerHTML = '<span class="btn-icon" style="margin:0">🔄</span>';
+                    iconBtn.innerHTML = '<span class="btn-icon" style="margin:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span>';
                     header.appendChild(iconBtn);
                     iconBtn.onclick = function(e){
                       try{

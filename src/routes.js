@@ -181,9 +181,21 @@ export async function authMiddleware(context) {
   const url = new URL(request.url);
   
   // 跳过不需要认证的路由
-  const publicPaths = ['/api/login', '/api/logout'];
+  const publicPaths = ['/api/login', '/api/logout', '/api/domains'];
   if (publicPaths.includes(url.pathname)) {
     return null;
+  }
+
+  // Landing page public API: allow certain endpoints without auth if LANDING_PUBLIC is enabled
+  if (env.LANDING_PUBLIC === 'true') {
+    const landingExactPaths = ['/api/generate', '/api/create', '/api/emails'];
+    const landingPrefixPaths = ['/api/email/'];
+    const isLandingPath = landingExactPaths.includes(url.pathname) ||
+      landingPrefixPaths.some(p => url.pathname.startsWith(p));
+    if (isLandingPath && (request.method === 'GET' || request.method === 'POST')) {
+      context.authPayload = { role: 'landing', username: '__anonymous__', userId: 0 };
+      return null;
+    }
   }
 
   // 检查超级管理员权限覆盖
@@ -505,6 +517,18 @@ async function delegateApiRequest(context) {
   const RESEND_API_KEY = env.RESEND_API_KEY || env.RESEND_TOKEN || env.RESEND || '';
   const ADMIN_NAME = String(env.ADMIN_NAME || 'admin').trim().toLowerCase();
 
+  // 公开 API（如 /api/domains）跳过认证，authPayload 可能为空
+  if (!authPayload) {
+    return handleApiRequest(request, DB, MAIL_DOMAINS, {
+      mockOnly: false,
+      resendApiKey: RESEND_API_KEY,
+      adminName: ADMIN_NAME,
+      r2: env.MAIL_EML,
+      authPayload: { role: 'public', username: '__anonymous__', userId: 0 },
+      env
+    });
+  }
+
   // 访客只允许读取模拟数据
   if ((authPayload.role || 'admin') === 'guest') {
     return handleApiRequest(request, DB, MAIL_DOMAINS, { 
@@ -512,7 +536,8 @@ async function delegateApiRequest(context) {
       resendApiKey: RESEND_API_KEY, 
       adminName: ADMIN_NAME, 
       r2: env.MAIL_EML, 
-      authPayload 
+      authPayload,
+      env
     });
   }
 
@@ -524,7 +549,8 @@ async function delegateApiRequest(context) {
       adminName: ADMIN_NAME, 
       r2: env.MAIL_EML, 
       authPayload,
-      mailboxOnly: true
+      mailboxOnly: true,
+      env
     });
   }
   
@@ -533,6 +559,7 @@ async function delegateApiRequest(context) {
     resendApiKey: RESEND_API_KEY, 
     adminName: ADMIN_NAME, 
     r2: env.MAIL_EML, 
-    authPayload 
+    authPayload,
+    env
   });
 }

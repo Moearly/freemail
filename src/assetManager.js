@@ -9,7 +9,11 @@ export class AssetManager {
     // 定义允许访问的静态资源路径
     this.allowedPaths = new Set([
       '/', 
-      '/index.html', 
+      '/index.html',
+      '/app',
+      '/app.html',
+      '/landing',
+      '/landing.html',
       '/login', 
       '/login.html', 
       '/admin.html',
@@ -140,8 +144,13 @@ export class AssetManager {
     // 处理路径映射
     const mappedRequest = this.handlePathMapping(request, url);
 
-    // 处理特殊页面（需要注入数据或权限检查）
-    if (pathname === '/' || pathname === '/index.html') {
+    // 首页 & Landing page: public, no auth required, inject domains
+    if (pathname === '/' || pathname === '/landing' || pathname === '/landing.html') {
+      return await this.handleLandingPage(mappedRequest, env, mailDomains);
+    }
+
+    // App 页面（需要登录）
+    if (pathname === '/app' || pathname === '/app.html' || pathname === '/index.html') {
       return await this.handleIndexPage(mappedRequest, env, mailDomains, JWT_TOKEN);
     }
 
@@ -178,12 +187,12 @@ export class AssetManager {
       if (payload.role === 'mailbox') {
         return Response.redirect(new URL('/html/mailbox.html', url).toString(), 302);
       } else {
-        return Response.redirect(new URL('/', url).toString(), 302);
+        return Response.redirect(new URL('/app', url).toString(), 302);
       }
     }
     
-    // 未登录：进入loading页面进行认证检查
-    return Response.redirect(new URL('/templates/loading.html', url).toString(), 302);
+    // 未登录：重定向到首页
+    return Response.redirect(new URL('/', url).toString(), 302);
   }
 
   /**
@@ -211,18 +220,13 @@ export class AssetManager {
     if (url.pathname.includes('mailbox')) {
       // 邮箱页面只允许邮箱用户访问
       if (payload.role !== 'mailbox') {
-        return Response.redirect(new URL('/', url).toString(), 302);
-      }
-      // 限制邮箱用户访问首页：如果访问 '/' 或 '/index.html'，重定向到邮箱页
-      if (url.pathname === '/' || url.pathname === '/index.html') {
-        return Response.redirect(new URL('/html/mailbox.html', url).toString(), 302);
+        return Response.redirect(new URL('/app', url).toString(), 302);
       }
     } else {
       // 其他受保护页面
       const isAllowed = (payload.role === 'admin' || payload.role === 'guest' || payload.role === 'mailbox');
       if (!isAllowed) {
-        // 已登录但权限不足：引导回首页
-        return Response.redirect(new URL('/', url).toString(), 302);
+        return Response.redirect(new URL('/app', url).toString(), 302);
       }
     }
     
@@ -240,8 +244,8 @@ export class AssetManager {
     const payload = await resolveAuthPayload(request, JWT_TOKEN);
     
     if (payload !== false) {
-      // 已登录：服务端直接重定向到首页，避免先渲染登录页
-      return Response.redirect(new URL('/', url).toString(), 302);
+      // 已登录：重定向到 App 后台
+      return Response.redirect(new URL('/app', url).toString(), 302);
     }
     
     return null;
@@ -255,6 +259,16 @@ export class AssetManager {
    */
   handlePathMapping(request, url) {
     let targetUrl = url.toString();
+
+    // 首页 → landing.html
+    if (url.pathname === '/' || url.pathname === '/landing') {
+      targetUrl = new URL('/landing.html', url).toString();
+    }
+
+    // /app → index.html（App 后台）
+    if (url.pathname === '/app' || url.pathname === '/app.html') {
+      targetUrl = new URL('/index.html', url).toString();
+    }
 
     // 兼容 /login 路由 → /login.html
     if (url.pathname === '/login') {
@@ -293,13 +307,20 @@ export class AssetManager {
   async handleIndexPage(request, env, mailDomains, JWT_TOKEN) {
     const url = new URL(request.url);
     const payload = await resolveAuthPayload(request, JWT_TOKEN);
+
+    // 未登录用户重定向到首页（landing）
+    if (!payload) {
+      return Response.redirect(new URL('/', url).toString(), 302);
+    }
     
     // 检查用户角色，邮箱用户重定向到专用页面
-    if (payload && payload.role === 'mailbox') {
+    if (payload.role === 'mailbox') {
       return Response.redirect(new URL('/html/mailbox.html', url).toString(), 302);
     }
     
-    const resp = await env.ASSETS.fetch(request);
+    // 确保请求指向 index.html
+    const indexReq = new Request(new URL('/index.html', url).toString(), { method: 'GET', headers: request.headers });
+    const resp = await env.ASSETS.fetch(indexReq);
     
     try {
       const text = await resp.text();
@@ -310,6 +331,31 @@ export class AssetManager {
         `<meta name="mail-domains" content="${mailDomains.join(',')}">`
       );
       
+      return new Response(injected, {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+        }
+      });
+    } catch (_) {
+      return resp;
+    }
+  }
+
+  /**
+   * 处理 Landing Page 请求（公开页面，免登录，注入域名）
+   */
+  async handleLandingPage(request, env, mailDomains) {
+    const baseUrl = new URL(request.url);
+    const landingUrl = new URL('/landing.html', baseUrl);
+    const landingReq = new Request(landingUrl.toString(), { method: 'GET', headers: request.headers });
+    const resp = await env.ASSETS.fetch(landingReq);
+    try {
+      const text = await resp.text();
+      const injected = text.replace(
+        '<meta name="mail-domains" content="">',
+        `<meta name="mail-domains" content="${mailDomains.join(',')}">`
+      );
       return new Response(injected, {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
@@ -372,7 +418,7 @@ export class AssetManager {
     if (payload.role !== 'mailbox') {
       // 非邮箱用户重定向到相应页面
       if (payload.role === 'admin' || payload.role === 'guest') {
-        return Response.redirect(new URL('/', url).toString(), 302);
+        return Response.redirect(new URL('/app', url).toString(), 302);
       } else {
         return Response.redirect(new URL('/login.html', url).toString(), 302);
       }
@@ -397,7 +443,7 @@ export class AssetManager {
     const isStrictAdmin = (payload.role === 'admin' && (payload.username === '__root__' || payload.username));
     const isGuest = (payload.role === 'guest');
     if (!isStrictAdmin && !isGuest){
-      return Response.redirect(new URL('/', url).toString(), 302);
+      return Response.redirect(new URL('/app', url).toString(), 302);
     }
     return env.ASSETS.fetch(request);
   }

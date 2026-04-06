@@ -93,10 +93,10 @@ function renderGrid(items){
       <div class="line pwd" title="${x.password_is_default ? '默认密码（邮箱本身）' : '自定义密码'}">密码：${x.password_is_default ? '默认' : '自定义'}</div>
       <div class="line login" title="邮箱登录权限">登录：${x.can_login ? '<span style="color:#16a34a">&#10003;允许</span>' : '<span style="color:#dc2626">&#10007;禁止</span>'}</div>
       <div class="line time" title="${fmt(x.created_at)}">创建：${fmt(x.created_at)}</div>
-      ${x.is_pinned ? '<div class="pin-badge" title="已置顶">📌</div>' : ''}
+      ${x.is_pinned ? '<div class="pin-badge" title="已置顶"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>' : ''}
       <div class="actions">
-        <button class="btn-icon" title="复制邮箱" onclick="event.stopPropagation(); copyMailboxAddressFromList('${x.address}')">📋</button>
-        <button class="btn-icon ${x.can_login ? 'active' : ''}" title="${x.can_login ? '禁止邮箱登录' : '允许邮箱登录'}" onclick="event.stopPropagation(); toggleMailboxLogin('${x.address}', ${!x.can_login})">${x.can_login ? '🔓' : '🔒'}</button>
+        <button class="btn-icon" title="复制邮箱" onclick="event.stopPropagation(); copyMailboxAddressFromList('${x.address}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        <button class="btn-icon ${x.can_login ? 'active' : ''}" title="${x.can_login ? '禁止邮箱登录' : '允许邮箱登录'}" onclick="event.stopPropagation(); toggleMailboxLogin('${x.address}', ${!x.can_login})">${x.can_login ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>'}</button>
       </div>
     </div>
   `).join('');
@@ -106,7 +106,7 @@ function renderList(items){
   return items.map(x => `
     <div class="mailbox-list-item" data-address="${x.address}">
       <div class="pin-indicator">
-        ${x.is_pinned ? '<span class="pin-icon" title="已置顶">📌</span>' : '<span class="pin-placeholder"></span>'}
+        ${x.is_pinned ? '<span class="pin-icon" title="已置顶"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>' : '<span class="pin-placeholder"></span>'}
       </div>
       <div class="mailbox-info">
         <div class="addr" title="${x.address}">${x.address}</div>
@@ -117,12 +117,12 @@ function renderList(items){
         </div>
       </div>
       <div class="list-actions">
-        <button class="btn btn-ghost btn-sm" title="复制邮箱" onclick="event.stopPropagation(); copyMailboxAddressFromList('${x.address}')">📋</button>
-        <button class="btn btn-ghost btn-sm ${x.is_pinned ? 'active' : ''}" title="${x.is_pinned ? '取消置顶' : '置顶邮箱'}" onclick="event.stopPropagation(); toggleMailboxPin('${x.address}', ${!x.is_pinned})">${x.is_pinned ? '📌' : '📍'}</button>
-        <button class="btn btn-ghost btn-sm" title="分配用户" onclick="event.stopPropagation(); assignMailboxToUser('${x.address}')">👤</button>
-        <button class="btn btn-ghost btn-sm" title="重置为默认密码" onclick="event.stopPropagation(); resetMailboxPassword('${x.address}')">🔁</button>
-        <button class="btn btn-ghost btn-sm ${x.can_login ? 'active' : ''}" title="${x.can_login ? '禁止邮箱登录' : '允许邮箱登录'}" onclick="event.stopPropagation(); toggleMailboxLogin('${x.address}', ${!x.can_login})">${x.can_login ? '🔓' : '🔒'}</button>
-        <button class="btn btn-ghost btn-sm" title="修改密码" onclick="event.stopPropagation(); changeMailboxPassword('${x.address}')">🔑</button>
+        <button class="btn btn-ghost btn-sm" title="复制邮箱" onclick="event.stopPropagation(); copyMailboxAddressFromList('${x.address}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        <button class="btn btn-ghost btn-sm ${x.is_pinned ? 'active' : ''}" title="${x.is_pinned ? '取消置顶' : '置顶邮箱'}" onclick="event.stopPropagation(); toggleMailboxPin('${x.address}', ${!x.is_pinned})">${x.is_pinned ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'}</button>
+        <button class="btn btn-ghost btn-sm" title="分配用户" onclick="event.stopPropagation(); assignMailboxToUser('${x.address}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+        <button class="btn btn-ghost btn-sm" title="重置为默认密码" onclick="event.stopPropagation(); resetMailboxPassword('${x.address}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></button>
+        <button class="btn btn-ghost btn-sm ${x.can_login ? 'active' : ''}" title="${x.can_login ? '禁止邮箱登录' : '允许邮箱登录'}" onclick="event.stopPropagation(); toggleMailboxLogin('${x.address}', ${!x.can_login})">${x.can_login ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>'}</button>
+        <button class="btn btn-ghost btn-sm" title="修改密码" onclick="event.stopPropagation(); changeMailboxPassword('${x.address}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.78 7.78 5.5 5.5 0 017.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></button>
       </div>
     </div>
   `).join('');
@@ -216,7 +216,7 @@ function showLoadingState(show) {
   } else {
     // 恢复交互元素
     els.search.disabled = false;
-    els.search.innerHTML = '<span class="btn-icon">🔍</span><span>搜索</span>';
+    els.search.innerHTML = '<span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><span>搜索</span>';
     
     // 隐藏加载占位符 - 完全重置className确保没有残留类
     els.loadingPlaceholder.className = 'loading-placeholder';
@@ -652,8 +652,7 @@ window.toggleMailboxLogin = async function(address, canLogin){
     if (!modal || !iconEl || !titleEl || !messageEl || !emailEl) return;
     
     // 设置确认框内容
-    const icon = canLogin ? '🔓' : '🔒';
-    iconEl.textContent = icon;
+    iconEl.innerHTML = canLogin ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 019.9-1"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>';
     
     // 添加对应的样式类
     iconEl.className = canLogin ? 'modal-icon unlock' : 'modal-icon lock';
@@ -1436,13 +1435,13 @@ function showBatchLoginModal(action) {
   
   // 设置标题和提示信息
   if (action === 'allow') {
-    icon.textContent = '✅';
+    icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
     icon.className = 'modal-icon unlock';
     title.textContent = '批量放行邮箱登录';
     message.textContent = '请输入需要放行登录的邮箱地址，每行一个。确认后这些邮箱将允许登录系统。';
     confirmBtn.className = 'btn btn-primary';
   } else {
-    icon.textContent = '🚫';
+    icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>';
     icon.className = 'modal-icon lock';
     title.textContent = '批量禁止邮箱登录';
     message.textContent = '请输入需要禁止登录的邮箱地址，每行一个。确认后这些邮箱将无法登录系统。';
