@@ -186,7 +186,22 @@ export async function authMiddleware(context) {
     return null;
   }
 
-  // Landing page public API: allow certain endpoints without auth if LANDING_PUBLIC is enabled
+  // 优先检查超级管理员权限（Token 优先于 Landing 匿名）
+  const JWT_TOKEN = env.JWT_TOKEN || env.JWT_SECRET || '';
+  const root = checkRootAdminOverride(request, JWT_TOKEN);
+  if (root) {
+    context.authPayload = root;
+    return null;
+  }
+
+  // 验证JWT Cookie（已登录用户）
+  const payload = await verifyJwtWithCache(JWT_TOKEN, request.headers.get('Cookie') || '');
+  if (payload) {
+    context.authPayload = payload;
+    return null;
+  }
+
+  // Landing page public API: 无认证时允许匿名访问特定端点
   if (env.LANDING_PUBLIC === 'true') {
     const landingExactPaths = ['/api/generate', '/api/create', '/api/emails'];
     const landingPrefixPaths = ['/api/email/'];
@@ -198,22 +213,7 @@ export async function authMiddleware(context) {
     }
   }
 
-  // 检查超级管理员权限覆盖
-  const JWT_TOKEN = env.JWT_TOKEN || env.JWT_SECRET || '';
-  const root = checkRootAdminOverride(request, JWT_TOKEN);
-  if (root) {
-    context.authPayload = root;
-    return null;
-  }
-
-  // 验证JWT令牌
-  const payload = await verifyJwtWithCache(JWT_TOKEN, request.headers.get('Cookie') || '');
-  if (!payload) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
-  context.authPayload = payload;
-  return null;
+  return new Response('Unauthorized', { status: 401 });
 }
 
 /**
@@ -226,12 +226,15 @@ async function verifyJwtWithCache(JWT_TOKEN, cookieHeader) {
   const token = (cookieHeader.split(';').find(s => s.trim().startsWith('iding-session=')) || '').split('=')[1] || '';
   if (!globalThis.__JWT_CACHE__) globalThis.__JWT_CACHE__ = new Map();
 
-  // 清理过期缓存项
   const now = Date.now();
   for (const [key, value] of globalThis.__JWT_CACHE__.entries()) {
     if (value.exp <= now) {
       globalThis.__JWT_CACHE__.delete(key);
     }
+  }
+  if (globalThis.__JWT_CACHE__.size > 1000) {
+    const keys = [...globalThis.__JWT_CACHE__.keys()];
+    for (let i = 0; i < keys.length - 500; i++) globalThis.__JWT_CACHE__.delete(keys[i]);
   }
 
   let payload = false;
@@ -266,15 +269,9 @@ function checkRootAdminOverride(request, JWT_TOKEN) {
     if (!JWT_TOKEN) return null;
     const auth = request.headers.get('Authorization') || request.headers.get('authorization') || '';
     const xToken = request.headers.get('X-Admin-Token') || request.headers.get('x-admin-token') || '';
-    let urlToken = '';
-    try {
-      const u = new URL(request.url);
-      urlToken = u.searchParams.get('admin_token') || '';
-    } catch (_) { }
     const bearer = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
     if (bearer && bearer === JWT_TOKEN) return { role: 'admin', username: '__root__', userId: 0 };
     if (xToken && xToken === JWT_TOKEN) return { role: 'admin', username: '__root__', userId: 0 };
-    if (urlToken && urlToken === JWT_TOKEN) return { role: 'admin', username: '__root__', userId: 0 };
     return null;
   } catch (_) {
     return null;
@@ -301,8 +298,22 @@ export function createRouter() {
   const router = new Router();
 
   // =================== 认证相关路由 ===================
+  if (!globalThis.__LOGIN_RATE__) globalThis.__LOGIN_RATE__ = new Map();
+
   router.post('/api/login', async (context) => {
     const { request, env } = context;
+
+    const clientIp = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
+    const rateMap = globalThis.__LOGIN_RATE__;
+    const now = Date.now();
+    for (const [k, v] of rateMap) { if (v.reset <= now) rateMap.delete(k); }
+    const entry = rateMap.get(clientIp) || { count: 0, reset: now + 60000 };
+    if (entry.count >= 10) {
+      return new Response('登录尝试过于频繁，请稍后再试', { status: 429 });
+    }
+    entry.count++;
+    rateMap.set(clientIp, entry);
+
     let DB;
     try {
       DB = await getDatabaseWithValidation(env);
@@ -325,7 +336,9 @@ export function createRouter() {
       }
 
       // 1) 管理员：用户名匹配 ADMIN_NAME + 密码匹配 ADMIN_PASSWORD
-      if (name === ADMIN_NAME && ADMIN_PASSWORD && password === ADMIN_PASSWORD) {
+      const { verifyPassword: verifyPwd } = await import('./authentication.js');
+      const adminPwdMatch = ADMIN_PASSWORD ? await verifyPwd(password, ADMIN_PASSWORD) || password === ADMIN_PASSWORD : false;
+      if (name === ADMIN_NAME && adminPwdMatch) {
         let adminUserId = 0;
         try {
           const u = await DB.prepare('SELECT id FROM users WHERE username = ?').bind(ADMIN_NAME).all();
@@ -359,7 +372,7 @@ export function createRouter() {
         const { results } = await DB.prepare('SELECT id, password_hash, role, mailbox_limit, can_send FROM users WHERE username = ?').bind(name).all();
         if (results && results.length) {
           const row = results[0];
-          const ok = await verifyPassword(password, row.password_hash || '');
+          const ok = await verifyPwd(password, row.password_hash || '');
           if (ok) {
             const role = (row.role === 'admin') ? 'admin' : 'user';
             const token = await createJwt(JWT_TOKEN, { role, username: name, userId: row.id });

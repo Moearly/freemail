@@ -3,6 +3,12 @@ main = "src/server.js"
 compatibility_date = "2025-04-01"
 workers_dev = true
 
+# 自定义域名路由
+routes = [
+  { pattern = "mail.codewith.site/*", zone_name = "codewith.site" },
+  { pattern = "freemail.best/*", zone_name = "freemail.best" },
+]
+
 # D1 数据库绑定
 [[d1_databases]]
 binding = "TEMP_MAIL_DB"
@@ -11,7 +17,7 @@ database_id = "9ed54bdc-edf1-4de0-9eed-c1b26825c946"
 
 # 环境变量（公开变量放这里，密钥用 wrangler secret put）
 [vars]
-MAIL_DOMAIN    = "codewith.site"          # 多域名用逗号分隔: "a.com,b.com"
+MAIL_DOMAIN    = "freemail.best,codewith.site"  # 多域名: 新域名优先
 ADMIN_NAME     = "admin"                  # 管理员用户名
 LANDING_PUBLIC = "true"                   # Landing Page 匿名访问开关
 MAIL_EXPIRE_HOURS = "24"                 # 邮件自动过期时间（小时）

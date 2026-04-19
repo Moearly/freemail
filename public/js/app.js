@@ -1195,13 +1195,15 @@ window.showEmail = async (id) => {
         <span class="btn-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
         <span>下载原始邮件</span>
       </a>` : '';
-    const toLine = (email.to_addrs || email.recipients || '').toString();
+    const escDetail = (s)=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||c));
+    const toLine = escDetail(email.to_addrs || email.recipients || '');
     const timeLine = formatTs(email.received_at || email.created_at);
-    const subjLine = (email.subject || '').toString().replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c] || c));
+    const subjLine = escDetail(email.subject || '');
+    const senderLine = escDetail(email.sender || '');
 
     els.modalContent.innerHTML = `
       <div class="email-meta-inline" style="margin:4px 0 8px 0;color:#334155;font-size:14px">
-        <span>发件人：${email.sender || ''}</span>
+        <span>发件人：${senderLine}</span>
         ${toLine ? `<span style=\"margin-left:12px\">收件人：${toLine}</span>` : ''}
         ${timeLine ? `<span style=\"margin-left:12px\">时间：${timeLine}</span>` : ''}
         ${subjLine ? `<span style=\"margin-left:12px\">主题：${subjLine}</span>` : ''}
@@ -1223,6 +1225,7 @@ window.showEmail = async (id) => {
     const host = document.getElementById('email-render-host');
     if (rawHtml.trim()){
       const iframe = document.createElement('iframe');
+      iframe.setAttribute('sandbox', 'allow-same-origin');
       iframe.style.width = '100%';
       iframe.style.border = '0';
       iframe.style.minHeight = '60vh';

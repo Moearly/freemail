@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /landing
+Disallow: /app
+Disallow: /admin
+Disallow: /html/admin.html
+Disallow: /html/mailbox.html
+Disallow: /html/mailboxes.html
+Disallow: /html/login.html
+Disallow: /templates/
+Disallow: /api/
+
+Sitemap: https://freemail.best/sitemap.xml

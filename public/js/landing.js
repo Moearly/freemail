@@ -494,7 +494,7 @@ window.__showEmail = async (id) => {
 
     let contentHtml = '';
     if (rawHtml.trim()) {
-      contentHtml = `<div class="modal-content-area"><iframe id="email-iframe" style="width:100%;border:0;min-height:400px;background:#fff;border-radius:0 0 var(--radius-sm) var(--radius-sm)"></iframe></div>`;
+      contentHtml = `<div class="modal-content-area"><iframe id="email-iframe" sandbox="allow-same-origin" style="width:100%;border:0;min-height:400px;background:#fff;border-radius:0 0 var(--radius-sm) var(--radius-sm)"></iframe></div>`;
     } else if (rawText.trim()) {
       contentHtml = `<div class="modal-content-area"><pre style="padding:20px;white-space:pre-wrap;word-break:break-word;color:var(--text);font-size:14px;line-height:1.7">${escHtml(rawText)}</pre></div>`;
     } else {

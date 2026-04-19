@@ -141,11 +141,9 @@ export async function verifyMailboxLogin(emailAddress, password, DB) {
   }
 }
 
-/**
- * SHA256哈希函数
- * @param {string} text - 要哈希的文本
- * @returns {Promise<string>} 哈希后的十六进制字符串
- */
+const PBKDF2_ITERATIONS = 100000;
+const SALT_LENGTH = 16;
+
 async function sha256Hex(text) {
   const encoder = new TextEncoder();
   const data = encoder.encode(text);
@@ -154,29 +152,63 @@ async function sha256Hex(text) {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+function arrayToHex(arr) {
+  return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function hexToArray(hex) {
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < hex.length; i += 2) bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+  return bytes;
+}
+
+async function pbkdf2Hash(password, salt) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+    key, 256
+  );
+  return new Uint8Array(bits);
+}
+
 /**
- * 验证原始密码与哈希密码是否匹配
- * @param {string} rawPassword - 原始明文密码
- * @param {string} hashed - 已哈希的密码
- * @returns {Promise<boolean>} 验证结果，true表示密码匹配
+ * 验证密码 — 兼容旧版纯 SHA-256 和新版 PBKDF2
+ * 新格式: "pbkdf2:<hex_salt>:<hex_hash>"
+ * 旧格式: 纯 64 位十六进制 SHA-256
  */
 export async function verifyPassword(rawPassword, hashed) {
   if (!hashed) return false;
   try {
+    if (hashed.startsWith('pbkdf2:')) {
+      const parts = hashed.split(':');
+      if (parts.length !== 3) return false;
+      const salt = hexToArray(parts[1]);
+      const storedHash = parts[2].toLowerCase();
+      const computed = arrayToHex(await pbkdf2Hash(rawPassword, salt));
+      return timingSafeEqual(computed, storedHash);
+    }
     const hex = (await sha256Hex(rawPassword)).toLowerCase();
-    return hex === String(hashed || '').toLowerCase();
+    return timingSafeEqual(hex, String(hashed || '').toLowerCase());
   } catch (_) {
     return false;
   }
 }
 
+function timingSafeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 /**
- * 生成密码哈希
- * @param {string} password - 原始密码
- * @returns {Promise<string>} 哈希后的密码
+ * 生成密码哈希 — 使用 PBKDF2 + 随机盐
  */
 export async function hashPassword(password) {
-  return await sha256Hex(password);
+  const salt = crypto.getRandomValues(new Uint8Array(SALT_LENGTH));
+  const hash = await pbkdf2Hash(password, salt);
+  return `pbkdf2:${arrayToHex(salt)}:${arrayToHex(hash)}`;
 }
 
 /**

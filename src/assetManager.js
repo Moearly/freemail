@@ -34,7 +34,9 @@ export class AssetManager {
       '/login.css',
       '/mailbox.js',
       '/mock.js', 
-      '/favicon.svg', 
+      '/favicon.svg',
+      '/robots.txt',
+      '/sitemap.xml', 
       '/route-guard.js',
       '/app-router.js',
       '/app-mobile.js',
@@ -70,7 +72,8 @@ export class AssetManager {
     // 需要未登录状态的路径（登录页）
     this.guestOnlyPaths = new Set([
       '/login',
-      '/login.html'
+      '/login.html',
+      '/html/login.html'
     ]);
   }
 
@@ -270,14 +273,14 @@ export class AssetManager {
       targetUrl = new URL('/index.html', url).toString();
     }
 
-    // 兼容 /login 路由 → /login.html
-    if (url.pathname === '/login') {
-      targetUrl = new URL('/login.html', url).toString();
+    // 兼容 /login 路由 → /html/login.html
+    if (url.pathname === '/login' || url.pathname === '/login.html') {
+      targetUrl = new URL('/html/login.html', url).toString();
     }
     
-    // 兼容 /admin 路由 → /admin.html
-    if (url.pathname === '/admin') {
-      targetUrl = new URL('/admin.html', url).toString();
+    // 兼容 /admin 路由 → /html/admin.html
+    if (url.pathname === '/admin' || url.pathname === '/admin.html') {
+      targetUrl = new URL('/html/admin.html', url).toString();
     }
     
     // 兼容 /mailbox 路由 → /html/mailbox.html
@@ -308,9 +311,9 @@ export class AssetManager {
     const url = new URL(request.url);
     const payload = await resolveAuthPayload(request, JWT_TOKEN);
 
-    // 未登录用户重定向到首页（landing）
+    // 未登录用户重定向到登录页
     if (!payload) {
-      return Response.redirect(new URL('/', url).toString(), 302);
+      return Response.redirect(new URL('/login', url).toString(), 302);
     }
     
     // 检查用户角色，邮箱用户重定向到专用页面
